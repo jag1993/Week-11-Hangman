@@ -4,14 +4,13 @@ var inquirer = require('inquirer');
 var blankArray = letterJS.blankArray;
 var wordToGuess = gameJS.wordToGuess;
 var wordToCheck = wordToGuess.split('');
+var wordList = gameJS.wordList;
 var userGuess;
 var guess;
-var count = 0;
 var lives = 5;
 
-// INSTEAD OF COUNT, THINK ABOUT IF LIVE IS GREATER THAN 0 THEN KEEP RUNNING OTHERWISE DONT
-// FIND A WAY TO MAKE PICKING A RANDOM WORD A FUNCTION 
-// ASK IF YOU HAVE TO USE CONSTRUCTORS BECASUE YOU DIDN'T
+
+
 var checker = function(){
  if(wordToGuess.indexOf(userGuess) === -1){
     		console.log('wrong');
@@ -19,30 +18,40 @@ var checker = function(){
     	}else{
     		console.log('right');
     		var i = wordToGuess.indexOf(userGuess);
-    	    blankArray[i] = userGuess;
-    	}
-}
+    	    blankArray[i] = userGuess; 	
+        }
+    }
 
-  
+var nextGame = function(){
+     if(blankArray.join('') === wordToGuess){
+        var index = Math.floor(Math.random()*wordList.length);
+        wordToGuess = wordList[index];
+        blankArray = [];
+         for(var i=0; i <wordToGuess.length; i++){
+          blankArray.push("_");
+        };
+    }
+        console.log(blankArray);
+  };
+
 var askQuestion = function() {
  if (lives > 0) {
         inquirer.prompt([{
             name: "userGuess",
             message: "Guess the word"
         }]).then(function(answers) {
-            // count++;
             guess = answers.userGuess;
             userGuess = guess.toLowerCase();
             checker();
-            console.log(wordToGuess);
-            console.log(blankArray);
-            console.log(lives);
+            console.log("You have " + lives + " left");
             askQuestion();
-        })
+            nextGame();
+        });
     
-}else{
+    }else{
 	console.log('You died');
-}
+    }
+
 }
 
  askQuestion();
