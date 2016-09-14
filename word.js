@@ -5,10 +5,10 @@ var blankArray = letterJS.blankArray;
 var wordToGuess = gameJS.wordToGuess;
 var wordToCheck = wordToGuess.split('');
 var wordList = gameJS.wordList;
+var correct;
 var userGuess;
 var guess;
 var lives = 5;
-
 
 
 var checker = function(){
@@ -17,10 +17,19 @@ var checker = function(){
     		lives --;
     	}else{
     		console.log('right');
-    		var i = wordToGuess.indexOf(userGuess);
-    	    blankArray[i] = userGuess; 	
+            correct = true;	
+        }
+    if(correct){
+
+        for(i=0;i<wordToGuess.length;i++){
+        if(wordToGuess[i] === userGuess){
+            blankArray[i] = userGuess;  
+            }
         }
     }
+}
+
+
 
 var nextGame = function(){
      if(blankArray.join('') === wordToGuess){
@@ -28,7 +37,7 @@ var nextGame = function(){
         wordToGuess = wordList[index];
         blankArray = [];
          for(var i=0; i <wordToGuess.length; i++){
-          blankArray.push("_");
+          blankArray.push('_');
         };
     }
         console.log(blankArray);
@@ -49,9 +58,9 @@ var askQuestion = function() {
         });
     
     }else{
-	console.log('You died');
+	console.log('You lost');
+    console.log(wordToGuess);
     }
-
 }
 
  askQuestion();
